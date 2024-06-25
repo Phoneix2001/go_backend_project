@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  backendproject:
+    image: backendproject
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - Helolo.test:8080

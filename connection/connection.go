@@ -14,6 +14,7 @@ import (
 var (
  Client *mongo.Client
  ToDoDB *mongo.Database
+ UsersDB *mongo.Database
 )
 
 func Mongodb() {
@@ -36,7 +37,7 @@ func Mongodb() {
 
 	Client = clientDB
 	ToDoDB = Client.Database("TodoDB")
-
+    UsersDB = clientDB.Database("users")
 	command := bson.D{{Key: "create", Value: "todos"}}
 
 	var result bson.M

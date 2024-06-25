@@ -1,33 +1,32 @@
 package main
 
 import (
-	todo "banckendproject/todo-crud"
-
-	cn "banckendproject/connection"
+	ar   "banckendproject/auth/router"
+	cn   "banckendproject/connection"
+	// todo "banckendproject/todo-crud"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.Default()
+
 	cn.Mongodb()
 
+	ar.AuthInit(router)
+	// router.GET("/todos", func(ctx *gin.Context) {
+	// 	todo.GetAllTODO(ctx)
+	// })
+	// router.POST("/todos", func(ctx *gin.Context) {
+	// 	todo.CreateTodo(ctx)
+	// })
+	// router.GET("/todos/:id", func(ctx *gin.Context) {
+	// 	todo.GetToDoById(ctx)
+	// })
 
+	// router.PUT("/todos/:id", func(ctx *gin.Context) {
 
-	
-	router.GET("/todos", func(ctx *gin.Context) {
-		todo.GetAllTODO(ctx)
-	})
-	router.POST("/todos", func(ctx *gin.Context) {
-		todo.CreateTodo(ctx)
-	})
-	router.GET("/todos/:id", func(ctx *gin.Context) {
-		todo.GetToDoById(ctx)
-	})
-
-	router.PUT("/todos/:id",func(ctx *gin.Context) {
-		
-	})
+	// })
 	router.Run("localhost:8080")
 }
 
