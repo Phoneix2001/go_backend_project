@@ -76,3 +76,6 @@ func UserDataByUserId(userID string) primitive.A {
 func UpdateUser(accessToken string) (bson.D) {
 	return bson.D{{Key: "$set", Value: bson.D{{Key: "access_token", Value: accessToken}}}}
 }
+func UpdateLogoutInfo() (bson.D) {
+	return bson.D{{Key: "$set", Value: bson.D{{Key: "access_token", Value: ""}}}}
+}

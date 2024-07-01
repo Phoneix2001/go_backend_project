@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	
 
 	"golang.org/x/crypto/bcrypt"
 )

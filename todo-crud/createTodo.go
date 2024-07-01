@@ -12,7 +12,6 @@ import (
 )
 
 func CreateTodo(c *gin.Context) {
-
 	ctx := context.TODO()
 	coll := db.ToDoDB.Collection("todos")
 
@@ -37,6 +36,4 @@ func CreateTodo(c *gin.Context) {
 
 	// Prints the ID of the inserted document
 	fmt.Printf("Document inserted with ID: %s\n", result.InsertedID)
-	c.IndentedJSON(http.StatusCreated, result)
-
-}
+	c.IndentedJSON(http.StatusCreated, result)}

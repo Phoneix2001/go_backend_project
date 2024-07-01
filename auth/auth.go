@@ -21,11 +21,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// type GetProfileProps struct {
-// 	Ctx *gin.Context
-//     Id string
-// }
-
 func SignUp(ctx *gin.Context) {
 	var userData md.UserInfo
 
@@ -164,13 +159,16 @@ func GetProfile(ctx *gin.Context) {
 }
 func LogOut(ctx *gin.Context) {
 
-	accessToken := ut.ValidateToken(ctx)
-	if accessToken == "" {
+	if err := ut.ValidateToken(ctx); err != nil {
 		return
 	}
 
 	c := context.TODO()
 	coll := db.UsersDB.Collection("user_details")
-	coll.UpdateOne(c, bson.D{{Key: "user_id", Value: accessToken}},dao.UpdateUser(accessToken))
+	id , err := primitive.ObjectIDFromHex(ctx.GetString("user_id"))
+	if err != nil {
+		erMessage.WriteError(ctx,err.Error())
+	}
+	coll.UpdateOne(c, bson.D{{Key: "user_id", Value: id}}, dao.UpdateLogoutInfo())
 
 }
