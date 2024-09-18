@@ -11,10 +11,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
 var (
- Client *mongo.Client
- ToDoDB *mongo.Database
- UsersDB *mongo.Database
+	Client  *mongo.Client
+	ToDoDB  *mongo.Database
+	UsersDB *mongo.Database
 )
 
 func Mongodb() {
@@ -29,7 +30,7 @@ func Mongodb() {
 			"www.mongodb.com/docs/drivers/go/current/usage-examples/#environment-variable")
 	}
 
-	clientDB, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	clientDB, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb+srv://Phonix2001:VBaNPmNgfhNWURQX@atlascluster.dx5msij.mongodb.net/?retryWrites=true&w=majority&appName=AtlasCluster"))
 
 	if err != nil {
 		panic(err)
@@ -37,7 +38,7 @@ func Mongodb() {
 
 	Client = clientDB
 	ToDoDB = Client.Database("TodoDB")
-    UsersDB = clientDB.Database("users")
+	UsersDB = clientDB.Database("users")
 	command := bson.D{{Key: "create", Value: "todos"}}
 
 	var result bson.M

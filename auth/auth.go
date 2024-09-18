@@ -46,8 +46,6 @@ func SignUp(ctx *gin.Context) {
 		userData.Password = ut.Encrypt(userData.Password)
 		if accessTokenString, err := ut.CreateToken(userData); err == nil {
 			userData.AccessToken = accessTokenString
-		} else if err != nil {
-			panic(err)
 		}
 		result, err := coll.InsertOne(c, userData)
 		if err != nil {
@@ -87,13 +85,9 @@ func SignIn(ctx *gin.Context) {
 	if isValidated {
 		c := context.TODO()
 		coll := db.UsersDB.Collection("user_details")
-		// key ,errors :=	primitive.ObjectIDFromHex(lgCreds.Username);
-		// if errors != nil {
-		// 	panic(errors)
-		// }
 		cursor, err := coll.Aggregate(c, dao.UserDataAG(lgCreds.Username))
 		if err != nil {
-			panic(err)
+			erMessage.WriteError(ctx,err.Error())
 		}
 		defer cursor.Close(ctx)
 		for cursor.Next(ctx) {
@@ -113,10 +107,10 @@ func SignIn(ctx *gin.Context) {
 			erMessage.WriteError(ctx, "Password is not correct")
 			return
 		}
-		if accessToken, err := ut.CreateToken(userData); err == nil {
+		if accessToken, err := ut.CreateToken(userData); err != nil {
+			erMessage.WriteError(ctx, err.Error())
+		} else {
 			userData.AccessToken = accessToken
-		} else if err != nil {
-			panic(err)
 		}
 		coll.UpdateOne(c, bson.D{{Key: "user_id", Value: userData.UserId}}, dao.UpdateUser(userData.AccessToken))
 		userData.Password = ""
@@ -165,9 +159,9 @@ func LogOut(ctx *gin.Context) {
 
 	c := context.TODO()
 	coll := db.UsersDB.Collection("user_details")
-	id , err := primitive.ObjectIDFromHex(ctx.GetString("user_id"))
+	id, err := primitive.ObjectIDFromHex(ctx.GetString("user_id"))
 	if err != nil {
-		erMessage.WriteError(ctx,err.Error())
+		erMessage.WriteError(ctx, err.Error())
 	}
 	coll.UpdateOne(c, bson.D{{Key: "user_id", Value: id}}, dao.UpdateLogoutInfo())
 

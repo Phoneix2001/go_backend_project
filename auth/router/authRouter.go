@@ -8,12 +8,16 @@ import (
 func AuthInit(router *gin.Engine) {
 	rt := router.Group("/user")
 	{
-		rt.GET("/getProfile", au.GetProfile)
+
+		rt.GET("/getProfile", au.GetProfile) 
+		
 		rt.GET("/getProfile/:id", au.GetProfile)
 
-		rt.POST("/signin", au.SignIn)
+        rt.POST("/signin", au.SignIn)
 		rt.POST("/signup", au.SignUp)
 
-		rt.PUT("/logout", au.LogOut)
+        rt.PUT("/logout", au.LogOut)
 	}
 }
+
+
